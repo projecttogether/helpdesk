@@ -44,7 +44,7 @@ services:
       - ./dev/keycloak:/opt/keycloak/data/import:ro
 
   mailpit:
-    image: axllent/mailpit:v1.33
+    image: axllent/mailpit:v1.34
     ports:
       - "127.0.0.1:1028:1025"
       - "127.0.0.1:8028:8025"
