@@ -1,0 +1,38 @@
+# Adds a PostgreSQL 18 next to the application:
+#   docker compose -f compose.yaml -f compose.postgres.yaml up -d
+# Set DATABASE_URL=postgres://helpdesk:<POSTGRES_PASSWORD>@postgres:5432/helpdesk in .env.
+# Back up the `postgres` volume (docs/deployment.md).
+
+services:
+  postgres:
+    image: postgres:18
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: helpdesk
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD}
+      POSTGRES_DB: helpdesk
+    volumes:
+      - postgres:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U helpdesk -d helpdesk"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  migrate:
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  web:
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  worker:
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+volumes:
+  postgres:
