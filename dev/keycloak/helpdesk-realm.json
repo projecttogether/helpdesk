@@ -1,0 +1,183 @@
+{
+  "realm": "helpdesk",
+  "displayName": "Helpdesk (development)",
+  "enabled": true,
+  "sslRequired": "none",
+  "registrationAllowed": false,
+  "loginWithEmailAllowed": true,
+  "groups": [
+    {
+      "name": "helpdesk",
+      "path": "/helpdesk",
+      "subGroups": [
+        {
+          "name": "employees",
+          "path": "/helpdesk/employees"
+        },
+        {
+          "name": "operators",
+          "path": "/helpdesk/operators",
+          "subGroups": [
+            {
+              "name": "finance",
+              "path": "/helpdesk/operators/finance"
+            }
+          ]
+        },
+        {
+          "name": "admins",
+          "path": "/helpdesk/admins"
+        },
+        {
+          "name": "superadmins",
+          "path": "/helpdesk/superadmins"
+        }
+      ]
+    }
+  ],
+  "clients": [
+    {
+      "clientId": "helpdesk",
+      "name": "Helpdesk (development)",
+      "enabled": true,
+      "protocol": "openid-connect",
+      "publicClient": false,
+      "clientAuthenticatorType": "client-secret",
+      "secret": "helpdesk-dev-client-secret",
+      "standardFlowEnabled": true,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "serviceAccountsEnabled": true,
+      "frontchannelLogout": true,
+      "defaultClientScopes": ["web-origins", "acr", "profile", "roles", "basic", "email", "kc-admin-api"],
+      "redirectUris": [
+        "http://localhost:3000/api/auth/callback/oidc",
+        "http://localhost:5173/api/auth/callback/oidc"
+      ],
+      "webOrigins": ["http://localhost:3000", "http://localhost:5173"],
+      "attributes": {
+        "pkce.code.challenge.method": "S256"
+      },
+      "protocolMappers": [
+        {
+          "name": "groups",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-group-membership-mapper",
+          "consentRequired": false,
+          "config": {
+            "full.path": "true",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "userinfo.token.claim": "true",
+            "claim.name": "groups"
+          }
+        }
+      ]
+    }
+  ],
+  "users": [
+    {
+      "username": "service-account-helpdesk",
+      "enabled": true,
+      "serviceAccountClientId": "helpdesk",
+      "clientRoles": {
+        "realm-management": ["view-users"]
+      }
+    },
+    {
+      "username": "ada",
+      "enabled": true,
+      "email": "ada@example.org",
+      "emailVerified": true,
+      "firstName": "Ada",
+      "lastName": "Superadmin",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "helpdesk-dev",
+          "temporary": false
+        }
+      ],
+      "groups": ["/helpdesk/superadmins"]
+    },
+    {
+      "username": "alma",
+      "enabled": true,
+      "email": "alma@example.org",
+      "emailVerified": true,
+      "firstName": "Alma",
+      "lastName": "Admin",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "helpdesk-dev",
+          "temporary": false
+        }
+      ],
+      "groups": ["/helpdesk/admins"]
+    },
+    {
+      "username": "oscar",
+      "enabled": true,
+      "email": "oscar@example.org",
+      "emailVerified": true,
+      "firstName": "Oscar",
+      "lastName": "Operator",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "helpdesk-dev",
+          "temporary": false
+        }
+      ],
+      "groups": ["/helpdesk/operators"]
+    },
+    {
+      "username": "fiona",
+      "enabled": true,
+      "email": "fiona@example.org",
+      "emailVerified": true,
+      "firstName": "Fiona",
+      "lastName": "Finance",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "helpdesk-dev",
+          "temporary": false
+        }
+      ],
+      "groups": ["/helpdesk/operators/finance"]
+    },
+    {
+      "username": "erin",
+      "enabled": true,
+      "email": "erin@example.org",
+      "emailVerified": true,
+      "firstName": "Erin",
+      "lastName": "Employee",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "helpdesk-dev",
+          "temporary": false
+        }
+      ],
+      "groups": ["/helpdesk/employees"]
+    },
+    {
+      "username": "nora",
+      "enabled": true,
+      "email": "nora@example.org",
+      "emailVerified": true,
+      "firstName": "Nora",
+      "lastName": "Nobody",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "helpdesk-dev",
+          "temporary": false
+        }
+      ]
+    }
+  ]
+}
